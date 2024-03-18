@@ -34,7 +34,7 @@ jobs:
         run: dotnet publish
 
       - name: Create NuGet Package
-        run: dotnet pack /p:Version=${{AssemblyVersion}}-rc1
+        run: dotnet pack /p:Version=2022.3-rc${{github.run_id}}.${{github.run_attempt}}
 
       - name: List Files
         run: ls -ln ActionPlayground/bin/Release
