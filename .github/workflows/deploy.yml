@@ -24,17 +24,17 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build
-        run: dotnet build --no-restore
+      - name: Build and Test
+        run: |
+          dotnet build --no-restore
+          dotnet test --no-build --verbosity normal
 
-      - name: Test
-        run: dotnet test --no-build --verbosity normal
-
-      - name: Build Release
-        run: dotnet publish
-
-      - name: Create NuGet Package
-        run: dotnet pack /p:Version=2022.3-rc${{github.run_number}}.${{github.run_attempt}}
+      - name: Create Release NuGet Package
+        run: |
+          dotnet publish
+          dotnet pack /p:Version=2022.3-rc${{INCINCREMENTAL_VERSION}}
+        env:
+          INCREMENTAL_VERSION: ${{github.run_number}}.${{github.run_attempt}}
 
       - name: List Files
         run: ls -ln ActionPlayground/bin/Release
